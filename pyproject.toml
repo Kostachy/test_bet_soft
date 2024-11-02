@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "test-betting-soft"
+version = "0.1.0"
+description = ""
+authors = ["kostachypc <kostachy@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.4"
+uvicorn = "^0.32.0"
+alembic = "^1.13.3"
+sqlalchemy = "^2.0.36"
+asyncpg = "^0.30.0"
+aio-pika = "^9.4.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
