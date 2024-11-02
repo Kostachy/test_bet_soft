@@ -1,6 +1,8 @@
 import logging
 from fastapi import FastAPI
 
+from src.line_provider.router import line_provider_router
+
 
 def create_line_provider_app() -> FastAPI:
     logging.basicConfig(
@@ -10,6 +12,7 @@ def create_line_provider_app() -> FastAPI:
 
     # settings = load_config()
     app_ = FastAPI(title="LineProviderAPI")
+    app_.include_router(line_provider_router)
     return app_
 
 
