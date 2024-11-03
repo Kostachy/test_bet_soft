@@ -2,8 +2,7 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Any, Generic, TypeVar
 
-from marshmallow.fields import Decimal
-
+from decimal import Decimal
 from src.bet_maker.domain.exceptions import InvalidBetSumError
 
 V = TypeVar("V", bound=Any)

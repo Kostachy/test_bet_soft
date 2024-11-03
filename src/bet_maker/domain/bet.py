@@ -1,7 +1,6 @@
 from dataclasses import dataclass
+from decimal import Decimal
 from enum import Enum
-
-from src.bet_maker.domain.value_object import BetSum
 
 
 class BetState(Enum):
@@ -14,4 +13,4 @@ class BetState(Enum):
 class Bet:
     id: int | None
     state: BetState
-    sum: BetSum
+    sum: Decimal
