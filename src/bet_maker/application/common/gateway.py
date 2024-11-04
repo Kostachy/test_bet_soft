@@ -15,7 +15,15 @@ class BetGateway(Protocol):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_all_bets_with_event_id(self, event_id: str) -> Sequence[Bet]:
+        raise NotImplementedError
+
+    @abstractmethod
     async def create_bet(self, bet: Bet) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def update_bet(self, bet: Bet) -> int:
         raise NotImplementedError
 
     @abstractmethod

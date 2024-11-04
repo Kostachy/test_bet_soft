@@ -11,3 +11,4 @@ class Bet(TimedBaseModel):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     state: Mapped[BetState] = mapped_column(default=BetState.PENDING)
     sum: Mapped[Decimal]
+    event_id: Mapped[str]

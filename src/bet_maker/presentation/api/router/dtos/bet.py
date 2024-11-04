@@ -1,8 +1,9 @@
 from pydantic import BaseModel, condecimal
 
 
-class BetSumDto(BaseModel):
+class BetCreateDto(BaseModel):
     bet_sum: condecimal(max_digits=10, decimal_places=2)
+    event_id: str
 
 
 class BetIdDto(BaseModel):

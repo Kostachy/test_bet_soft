@@ -6,6 +6,7 @@ from fastapi.responses import ORJSONResponse
 from starlette import status
 from starlette.requests import Request
 
+from src.bet_maker.application.exceptions import NotAvailableEventForBetError, ApplicationError
 from src.bet_maker.domain.exceptions import DomainError, InvalidBetSumError
 
 logger = logging.getLogger(__name__)
@@ -18,13 +19,19 @@ class ErrorResult:
 
 
 def setup_exception_handlers(app: FastAPI) -> None:
-    app.add_exception_handler(DomainError, iiko_server_exception_handler)
+    app.add_exception_handler(DomainError, bet_exception_handler)
+    app.add_exception_handler(ApplicationError, bet_exception_handler)
     app.add_exception_handler(Exception, unknown_exception_handler)
 
 
-async def iiko_server_exception_handler(request: Request, err: Exception) -> ORJSONResponse:  # noqa
+async def bet_exception_handler(request: Request, err: Exception) -> ORJSONResponse:  # noqa
     match err:
         case InvalidBetSumError() as err:
+            return ORJSONResponse(
+                ErrorResult(error=err.__class__.__name__, error_description=err.description),
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+        case NotAvailableEventForBetError() as err:
             return ORJSONResponse(
                 ErrorResult(error=err.__class__.__name__, error_description=err.description),
                 status_code=status.HTTP_400_BAD_REQUEST,

@@ -14,3 +14,7 @@ class Bet:
     id: int | None
     state: BetState
     sum: Decimal
+    event_id: str
+
+    def update_state(self, state: BetState):
+        self.state = state

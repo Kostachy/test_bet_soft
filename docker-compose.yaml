@@ -8,7 +8,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    command: [ "uvicorn", "src.bet_maker.presentation.api.main:app", "--host", "0.0.0.0", "--port", "8080" ]
+    command: [ "python", "-m", "src.bet_maker"]
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -18,7 +18,25 @@ services:
       app_rabbitmq:
         condition: service_healthy
     networks:
-      - app_tg_bot_network
+      - app_bet_network
+
+  bet_maker_worker_consumer:
+    image: bet_maker_image
+    container_name: app.bet_maker.consumer
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: [ "faststream", "run", "src.bet_maker.infrastructure.consumer.main:app", "--workers", "1" ]
+    restart: unless-stopped
+    depends_on:
+      app_db:
+        condition: service_healthy
+      app_rabbitmq:
+        condition: service_healthy
+    networks:
+      - app_bet_network
 
   line_provider:
     image: line_provider_image
@@ -29,7 +47,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    command: ["python", "-m", "src.line_provider"]
+    command: [ "python", "-m", "src.line_provider" ]
     ports:
       - "8100:8100"
     restart: unless-stopped
@@ -37,7 +55,7 @@ services:
       app_rabbitmq:
         condition: service_healthy
     networks:
-      - app_tg_bot_network
+      - app_bet_network
 
   app_db:
     image: library/postgres:16-alpine
@@ -57,7 +75,7 @@ services:
       retries: 5
       start_period: 10s
     networks:
-      - app_tg_bot_network
+      - app_bet_network
 
   app_rabbitmq:
     image: rabbitmq:4.0.3-management-alpine
@@ -84,7 +102,7 @@ services:
       retries: 5
       start_period: 10s
     networks:
-      - app_tg_bot_network
+      - app_bet_network
 
   pg_admin:
     image: dpage/pgadmin4
@@ -96,11 +114,11 @@ services:
       - PGADMIN_DEFAULT_EMAIL=user@domain.com
       - PGADMIN_DEFAULT_PASSWORD=SuperSecret
     networks:
-      - app_tg_bot_network
+      - app_bet_network
 
 volumes:
   app_pg_data: { }
   app_rabbitmq_data: { }
 
 networks:
-  app_tg_bot_network: { }
+  app_bet_network: { }

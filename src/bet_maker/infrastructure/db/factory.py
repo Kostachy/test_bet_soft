@@ -18,7 +18,7 @@ def create_engine(database_url: str) -> AsyncEngine:
     return create_async_engine(
         url=database_url,
         poolclass=AsyncAdaptedQueuePool,
-        pool_size=5,
+        pool_size=3,
         max_overflow=2,
         # echo=True,
     )

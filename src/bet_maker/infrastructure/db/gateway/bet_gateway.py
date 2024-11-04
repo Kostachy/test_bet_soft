@@ -26,7 +26,8 @@ class SqlBetGateway(BetGateway):
         return Bet(
             id=bet.id,
             state=bet.state,
-            sum=bet.sum
+            sum=bet.sum,
+            event_id=bet.event_id
         )
 
     async def get_all_bets(self) -> Sequence[Bet]:
@@ -39,15 +40,46 @@ class SqlBetGateway(BetGateway):
             Bet(
                 id=bet.id,
                 state=bet.state,
-                sum=bet.sum
+                sum=bet.sum,
+                event_id=bet.event_id
+            ) for bet in all_bets
+        ]
+
+    async def get_all_bets_with_event_id(self, event_id: str) -> Sequence[Bet]:
+        query = select(BetDb).where(BetDb.event_id == event_id).order_by(BetDb.created_at)
+        result = await self.session.execute(query)
+        all_bets = result.scalars().all()
+        if not all_bets:
+            return []
+        return [
+            Bet(
+                id=bet.id,
+                state=bet.state,
+                sum=bet.sum,
+                event_id=bet.event_id
             ) for bet in all_bets
         ]
 
     async def create_bet(self, bet: Bet) -> int:
         db_bet = BetDb(
             sum=bet.sum,
+            event_id=bet.event_id
         )
         self.session.add(db_bet)
+        try:
+            await self.session.flush((db_bet,))
+        except IntegrityError:
+            logger.error("Error in BetGateway")
+        return db_bet.id
+
+    async def update_bet(self, bet: Bet) -> int:
+        db_bet = BetDb(
+            id=bet.id,
+            state=bet.state,
+            sum=bet.sum,
+            event_id=bet.event_id
+        )
+        await self.session.merge(db_bet)
         try:
             await self.session.flush((db_bet,))
         except IntegrityError:
