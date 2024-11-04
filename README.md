@@ -8,7 +8,9 @@
 6. Для остановки и удаления контейнеров `make down`
 
 Сервисы должны быть доступны по ссылкам:
+
 `http://0.0.0.0:8100/docs` либо `http://127.0.0.1:8100/docs` - LineProviderApi
+
 `http://0.0.0.0:8080/docs` либо `http://127.0.0.1:8080/docs` - BetMakerApi
 
 `http://127.0.0.1:15672/` - админ панель RabbitMQ (login: admin, password: admin)
