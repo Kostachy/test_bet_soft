@@ -1,6 +1,6 @@
 ### Инструкция
 
-1. git clone ``
+1. git clone `https://github.com/Kostachy/test_bet_soft`
 2. .env уже сконфигурирован
 3. Запустить докер через `make up`
 4. Прогнать миграции через `make migrate`
