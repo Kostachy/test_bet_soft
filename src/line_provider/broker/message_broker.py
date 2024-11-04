@@ -44,21 +44,13 @@ class RMQMessageBroker(MessageBroker):
             headers={},
         )
 
-        await self._publish_message(rq_message, routing_key, exchange_name)
+        exchange = await self._channel.get_exchange(exchange_name, ensure=False)
+        queue = await self._channel.declare_queue("event_queue", durable=True)
+        await queue.bind(exchange, routing_key=routing_key)
+
+        await exchange.publish(rq_message, routing_key=routing_key)
+
+        logging.info("Message with id %s was send", rq_message.message_id)
 
     async def declare_exchange(self, exchange_name: str) -> None:
         await self._channel.declare_exchange(exchange_name, aio_pika.ExchangeType.DIRECT)
-
-    async def _publish_message(
-            self,
-            rq_message: aio_pika.Message,
-            routing_key: str,
-            exchange_name: str,
-    ) -> None:
-        exchange = await self._get_exchange(exchange_name)
-        await exchange.publish(rq_message, routing_key=routing_key)
-
-        logging.info("Message sent", extra={"rq_message": rq_message})
-
-    async def _get_exchange(self, exchange_name: str) -> aio_pika.abc.AbstractExchange:
-        return await self._channel.get_exchange(exchange_name, ensure=False)
