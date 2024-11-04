@@ -2,7 +2,7 @@ from pydantic import BaseModel, condecimal
 
 
 class BetCreateDto(BaseModel):
-    bet_sum: condecimal(max_digits=10, decimal_places=2)
+    bet_sum: condecimal(max_digits=10, decimal_places=2)  # type: ignore
     event_id: str
 
 

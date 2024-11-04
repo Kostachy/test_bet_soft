@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.bet_maker.application.common.gateway import BetGateway
 from src.bet_maker.domain.bet import Bet
-from src.bet_maker.domain.value_object import BetSum
 from src.bet_maker.infrastructure.db.models import Bet as BetDb
 
 logger = logging.getLogger(__name__)

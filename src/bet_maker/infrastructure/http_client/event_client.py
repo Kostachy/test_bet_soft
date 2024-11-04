@@ -32,3 +32,4 @@ class HttpEventClient(EventClient):
                     "Get timeout when make request to line_provider events",
                     exc_info=True,
                 )
+                return []

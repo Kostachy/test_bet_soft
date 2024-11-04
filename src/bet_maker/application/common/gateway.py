@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from decimal import Decimal
 from typing import Protocol, Sequence
 
 from src.bet_maker.domain.bet import Bet

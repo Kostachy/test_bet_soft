@@ -25,9 +25,9 @@ class ImpEventSender(EventSender):
                 message_id=uuid4(),
                 data={
                     "event_id": event.event_id,
-                    "coefficient": float(event.coefficient),
+                    "coefficient": float(event.coefficient),  # type: ignore
                     "deadline": event.deadline,
-                    "state": event.state.value,
+                    "state": event.state.value,  # type: ignore
                 },
                 message_type="event",
             ),

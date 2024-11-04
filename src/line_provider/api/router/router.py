@@ -36,4 +36,4 @@ async def get_event(event_id: str | None = None):
 
 @line_provider_router.get("/events")
 async def get_events():
-    return list(e for e in events.values() if time.time() < e.deadline)
+    return list(e for e in events.values() if time.time() < e.deadline) # type: ignore
