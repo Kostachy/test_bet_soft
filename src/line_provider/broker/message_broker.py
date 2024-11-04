@@ -10,10 +10,10 @@ from .message import Message
 
 class MessageBroker(Protocol):
     async def publish_message(
-            self,
-            message: Message,
-            routing_key: str,
-            exchange_name: str,
+        self,
+        message: Message,
+        routing_key: str,
+        exchange_name: str,
     ) -> None:
         raise NotImplementedError
 
@@ -26,10 +26,10 @@ class RMQMessageBroker(MessageBroker):
         self._channel = channel
 
     async def publish_message(
-            self,
-            message: Message,
-            routing_key: str,
-            exchange_name: str,
+        self,
+        message: Message,
+        routing_key: str,
+        exchange_name: str,
     ) -> None:
         body = {
             "message_type": message.message_type,
@@ -53,4 +53,6 @@ class RMQMessageBroker(MessageBroker):
         logging.info("Message with id %s was send", rq_message.message_id)
 
     async def declare_exchange(self, exchange_name: str) -> None:
-        await self._channel.declare_exchange(exchange_name, aio_pika.ExchangeType.DIRECT)
+        await self._channel.declare_exchange(
+            exchange_name, aio_pika.ExchangeType.DIRECT
+        )

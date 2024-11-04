@@ -1,6 +1,7 @@
-from pydantic import BaseModel
 import decimal
 import enum
+
+from pydantic import BaseModel
 
 
 class EventState(enum.Enum):

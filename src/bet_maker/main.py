@@ -1,8 +1,9 @@
 import logging
 
 import uvicorn
-from fastapi import FastAPI
 from aiohttp import ClientSession
+from fastapi import FastAPI
+
 from src.bet_maker.config import Config
 from src.bet_maker.infrastructure.db.factory import create_engine, create_session_maker
 from src.bet_maker.presentation.api.depends import setup_providers
@@ -37,7 +38,7 @@ async def run_api(app: FastAPI, api_config: Config) -> None:
         host=api_config.api.host,
         port=int(api_config.api.port),
         log_level=logging.INFO,
-        log_config=None
+        log_config=None,
     )
     server = uvicorn.Server(config)
     logger.info("Running BetMakerApi")

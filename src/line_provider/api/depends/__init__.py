@@ -7,8 +7,8 @@ from src.line_provider.broker.factory import EventSenderFactory
 
 
 def setup_providers(
-        app: FastAPI,
-        pool: Pool[aio_pika.abc.AbstractChannel],
+    app: FastAPI,
+    pool: Pool[aio_pika.abc.AbstractChannel],
 ):
     event_sender_provider = EventSenderFactory(pool)
 

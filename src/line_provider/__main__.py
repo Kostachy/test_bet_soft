@@ -1,8 +1,8 @@
 import asyncio
 
-from src.line_provider.broker.factory import create_connection_pool, create_channel_pool
+from src.line_provider.broker.factory import create_channel_pool, create_connection_pool
 from src.line_provider.config import load_config
-from src.line_provider.main import run_api, init_api
+from src.line_provider.main import init_api, run_api
 
 
 async def main() -> None:

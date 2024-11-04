@@ -23,12 +23,7 @@ class SqlBetGateway(BetGateway):
         bet = result.scalar_one_or_none()
         if bet is None:
             return None
-        return Bet(
-            id=bet.id,
-            state=bet.state,
-            sum=bet.sum,
-            event_id=bet.event_id
-        )
+        return Bet(id=bet.id, state=bet.state, sum=bet.sum, event_id=bet.event_id)
 
     async def get_all_bets(self) -> Sequence[Bet]:
         query = select(BetDb).order_by(BetDb.created_at)
@@ -37,34 +32,25 @@ class SqlBetGateway(BetGateway):
         if not all_bets:
             return []
         return [
-            Bet(
-                id=bet.id,
-                state=bet.state,
-                sum=bet.sum,
-                event_id=bet.event_id
-            ) for bet in all_bets
+            Bet(id=bet.id, state=bet.state, sum=bet.sum, event_id=bet.event_id)
+            for bet in all_bets
         ]
 
     async def get_all_bets_with_event_id(self, event_id: str) -> Sequence[Bet]:
-        query = select(BetDb).where(BetDb.event_id == event_id).order_by(BetDb.created_at)
+        query = (
+            select(BetDb).where(BetDb.event_id == event_id).order_by(BetDb.created_at)
+        )
         result = await self.session.execute(query)
         all_bets = result.scalars().all()
         if not all_bets:
             return []
         return [
-            Bet(
-                id=bet.id,
-                state=bet.state,
-                sum=bet.sum,
-                event_id=bet.event_id
-            ) for bet in all_bets
+            Bet(id=bet.id, state=bet.state, sum=bet.sum, event_id=bet.event_id)
+            for bet in all_bets
         ]
 
     async def create_bet(self, bet: Bet) -> int:
-        db_bet = BetDb(
-            sum=bet.sum,
-            event_id=bet.event_id
-        )
+        db_bet = BetDb(sum=bet.sum, event_id=bet.event_id)
         self.session.add(db_bet)
         try:
             await self.session.flush((db_bet,))
@@ -73,12 +59,7 @@ class SqlBetGateway(BetGateway):
         return db_bet.id
 
     async def update_bet(self, bet: Bet) -> int:
-        db_bet = BetDb(
-            id=bet.id,
-            state=bet.state,
-            sum=bet.sum,
-            event_id=bet.event_id
-        )
+        db_bet = BetDb(id=bet.id, state=bet.state, sum=bet.sum, event_id=bet.event_id)
         await self.session.merge(db_bet)
         try:
             await self.session.flush((db_bet,))

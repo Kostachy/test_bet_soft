@@ -1,4 +1,5 @@
 from decimal import Decimal
+
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.bet_maker.domain.bet import BetState

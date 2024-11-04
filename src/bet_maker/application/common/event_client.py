@@ -1,5 +1,5 @@
-from typing import Protocol, Sequence
 from abc import abstractmethod
+from typing import Protocol, Sequence
 
 from src.bet_maker.infrastructure.http_client.schema import Event
 

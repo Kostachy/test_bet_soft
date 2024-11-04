@@ -1,8 +1,8 @@
 from abc import ABC
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Any, Generic, TypeVar
 
-from decimal import Decimal
 from src.bet_maker.domain.exceptions import InvalidBetSumError
 
 V = TypeVar("V", bound=Any)
@@ -23,6 +23,7 @@ class BaseValueObject(ABC):
 @dataclass(frozen=True)
 class ValueObject(BaseValueObject, ABC, Generic[V]):
     """Базовый класс для Объектов-значений с конвертацией"""
+
     value: V
 
     def to_raw(self) -> V:
@@ -35,6 +36,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class BetSum(ValueObject[Decimal]):
     """Объект-значение для валидации суммы ставки"""
+
     value: Decimal
 
     def _validate(self) -> None:

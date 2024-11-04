@@ -27,7 +27,7 @@ class ImpEventSender(EventSender):
                     "event_id": event.event_id,
                     "coefficient": float(event.coefficient),
                     "deadline": event.deadline,
-                    "state": event.state.value
+                    "state": event.state.value,
                 },
                 message_type="event",
             ),

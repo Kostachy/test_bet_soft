@@ -28,5 +28,5 @@ def load_config(path: str | None = None) -> Config:
         api=ApiConfig(
             host=env("LINE_PROVIDER_HOST"),
             port=env("LINE_PROVIDER_PORT"),
-        )
+        ),
     )

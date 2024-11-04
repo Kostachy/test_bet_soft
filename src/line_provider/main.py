@@ -7,8 +7,8 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from src.line_provider.api.depends import setup_providers
-from src.line_provider.config import Config
 from src.line_provider.api.router import line_provider_router
+from src.line_provider.config import Config
 
 logger = logging.getLogger(__name__)
 

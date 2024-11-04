@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 class ApplicationError(Exception):
     """Base application error"""
+
     pass
 
 

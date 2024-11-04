@@ -7,12 +7,14 @@ from src.bet_maker.application.common.gateway import BetGateway
 from src.bet_maker.application.exceptions import NotAvailableEventForBetError
 from src.bet_maker.domain.bet import Bet, BetState
 from src.bet_maker.domain.value_object import BetSum
-from src.bet_maker.infrastructure.http_client.schema import EventState, Event
+from src.bet_maker.infrastructure.http_client.schema import Event, EventState
 
 logger = logging.getLogger(__name__)
 
 
-async def make_bet(gateway: BetGateway, event_client: EventClient, bet_sum: Decimal, event_id: str) -> int:
+async def make_bet(
+    gateway: BetGateway, event_client: EventClient, bet_sum: Decimal, event_id: str
+) -> int:
     all_available_events = await event_client.get_all_available_events()
     for event in all_available_events:
         if event.event_id == event_id and event.state == EventState.NEW:
@@ -21,7 +23,7 @@ async def make_bet(gateway: BetGateway, event_client: EventClient, bet_sum: Deci
                 id=None,
                 state=BetState.PENDING,
                 sum=bet_sum_obj.to_raw(),
-                event_id=event_id
+                event_id=event_id,
             )
             new_bet_id = await gateway.create_bet(bet)
             await gateway.commit()
@@ -32,7 +34,9 @@ async def make_bet(gateway: BetGateway, event_client: EventClient, bet_sum: Deci
     raise NotAvailableEventForBetError(event_id)
 
 
-async def update_bet_state_if_event_state_was_updated(gateway: BetGateway, event: Event) -> None:
+async def update_bet_state_if_event_state_was_updated(
+    gateway: BetGateway, event: Event
+) -> None:
     bets = await gateway.get_all_bets_with_event_id(event.event_id)
     for bet in bets:
         if bet.event_id == event.event_id:

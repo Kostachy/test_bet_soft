@@ -47,5 +47,4 @@ def load_config(path: str | None = None) -> Config:
             port=env("BET_MAKER_PORT"),
         ),
         broker=BrokerConfig(broker_url=env("BROKER_URL")),
-
     )

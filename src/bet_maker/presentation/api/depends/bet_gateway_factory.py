@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
 from src.bet_maker.infrastructure.db.gateway.bet_gateway import SqlBetGateway
 
 

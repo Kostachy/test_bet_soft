@@ -23,9 +23,12 @@ class HttpEventClient(EventClient):
                 if request.status != 200:
                     logger.info(
                         "Get an error when trying to make request to line_provider's events. Status code is %s",
-                        request.status
+                        request.status,
                     )
                     return []
                 return [Event(**event) for event in response]
             except ConnectionTimeoutError:
-                logger.error("Get timeout when make request to line_provider events", exc_info=True)
+                logger.error(
+                    "Get timeout when make request to line_provider events",
+                    exc_info=True,
+                )

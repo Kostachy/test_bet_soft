@@ -1,7 +1,7 @@
 import asyncio
 
 from src.bet_maker.config import load_config
-from src.bet_maker.main import run_api, init_api
+from src.bet_maker.main import init_api, run_api
 
 
 async def main() -> None:

@@ -1,5 +1,6 @@
 from faststream import FastStream
 from faststream.rabbit import RabbitBroker
+
 from src.bet_maker.config import load_config
 from src.bet_maker.infrastructure.consumer.router import rabbit_router
 
