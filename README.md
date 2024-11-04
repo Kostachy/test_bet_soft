@@ -19,7 +19,7 @@
 
 ### Обзор выбранных технологий и инструментов.
 
-Стeк: Python 3.10, SQLAlchemy, alembic, asyncpg, RabbitMQ, aio-pika, FastStream.
+Стeк: Python 3.10, SQLAlchemy, alembic, asyncpg, RabbitMQ, aio-pika, FastStream, PostgreSQL
 
 ### Архитектурное описание решения
 
