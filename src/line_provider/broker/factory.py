@@ -2,6 +2,7 @@ import aio_pika
 from aio_pika.abc import AbstractRobustConnection, AbstractChannel
 from aio_pika.pool import Pool
 
+from .event_sender import ImpEventSender, EventSender
 from .message_broker import RMQMessageBroker, MessageBroker
 from ..config import Config
 
@@ -23,20 +24,10 @@ async def create_channel_pool(connection_pool: Pool[aio_pika.abc.AbstractConnect
     return Pool(lambda: get_channel(connection_pool), max_size=max_size)
 
 
-# Решил не использовать транзакции, чтобы излишне не усложнять
-#
-# async def build_rq_transaction(
-#         rq_channel: aio_pika.abc.AbstractChannel,
-# ) -> aio_pika.abc.AbstractTransaction:
-#     rq_transaction = rq_channel.transaction()
-#     await rq_transaction.select()
-#     return rq_transaction
-
-class MessageBrokerFactory:
+class EventSenderFactory:
     def __init__(self, rq_channel_pool: Pool[aio_pika.abc.AbstractChannel]):
         self.rq_channel_pool = rq_channel_pool
 
-    async def create(self) -> MessageBroker:
+    async def create(self) -> EventSender:
         async with self.rq_channel_pool.acquire() as channel:
-            # channel.transaction()
-            yield RMQMessageBroker(channel)
+            yield ImpEventSender(message_broker=RMQMessageBroker(channel))
